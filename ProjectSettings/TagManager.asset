@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Snowball
+  - Crate
+  - Background Close
+  - Background Far
+  - Stick
+  - Metal
+  - Snow
+  - Background Wall
   layers:
   - Default
   - TransparentFX
@@ -44,6 +52,12 @@ TagManager:
   - name: Background
     uniqueID: 2917051625
     locked: 0
+  - name: Behind default
+    uniqueID: 2574022491
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 960888039
     locked: 0
