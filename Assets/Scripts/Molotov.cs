@@ -1,24 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Snowball : MonoBehaviour
+public class Molotov : MonoBehaviour
 {
     private PlayerController playerControllerScript;
 
-    public Rigidbody2D snowballRB;
+    public Rigidbody2D molotovRB;
     private Collider2D playerCollider;
-    public Collider2D snowballCollider;
-    public SpriteRenderer snowballSprite;
+    public Collider2D molotovCollider;
     private GameObject player;
-    public ParticleSystem snowballParticles;
+    public ParticleSystem molotovParticles;
+    public ParticleSystem iceParticles;
     public ParticleSystem crateParticles1;
     public ParticleSystem crateParticles2;
 
     private Vector2 PositionOnHit;
 
-    public float snowballSpeed;
+    public float molotovSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -29,27 +28,33 @@ public class Snowball : MonoBehaviour
         playerControllerScript = player.GetComponent<PlayerController>();
 
         //Ignore player in collision
-        Physics2D.IgnoreCollision(snowballCollider, playerCollider);
+        Physics2D.IgnoreCollision(molotovCollider, playerCollider);
         //Move
         if (playerControllerScript.facingRight)
         {
-            snowballRB.velocity = new Vector2(snowballSpeed, snowballSpeed / 5);
+            molotovRB.velocity = new Vector2(molotovSpeed, molotovSpeed);
         }
         else
         {
-            snowballRB.velocity = new Vector2(-snowballSpeed, snowballSpeed / 5);
+            molotovRB.velocity = new Vector2(-molotovSpeed, molotovSpeed);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Destroy crate and snowball
+        if (collision.gameObject.tag == "Ice")
+        {
+            PositionOnHit = collision.transform.position;          
+            Instantiate(iceParticles, PositionOnHit, Quaternion.identity);
+            collision.gameObject.SetActive(false);
+        }
         if (collision.gameObject.tag == "Crate")
         {
             PositionOnHit = collision.transform.position;
@@ -57,7 +62,7 @@ public class Snowball : MonoBehaviour
             Instantiate(crateParticles2, PositionOnHit, Quaternion.identity);
             collision.gameObject.SetActive(false);
         }
-        Instantiate(snowballParticles, transform.position, transform.rotation);
+        Instantiate(molotovParticles, transform.position, transform.rotation);
         Destroy(this.gameObject);
     }
 }

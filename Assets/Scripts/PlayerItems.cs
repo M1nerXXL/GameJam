@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerItems : MonoBehaviour
 {
@@ -11,7 +10,12 @@ public class PlayerItems : MonoBehaviour
     public GameObject snowballIcon;
     public GameObject snowball;
     public GameObject molotov;
+    public GameObject bottle;
+    public GameObject fabric;
     public GameObject[] snow;
+    public Collider2D playerCollider;
+    public Collider2D snowballCollider;
+    public Collider2D molotovCollider;
     public TextMeshProUGUI snowballCountDisplay;
     public TextMeshProUGUI molotovCountDisplay;
     public TextMeshProUGUI stickCountDisplay;
@@ -33,7 +37,8 @@ public class PlayerItems : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Physics2D.IgnoreCollision(playerCollider, molotovCollider);
+        Physics2D.IgnoreCollision(playerCollider, snowballCollider);
     }
 
     // Update is called once per frame
@@ -131,6 +136,8 @@ public class PlayerItems : MonoBehaviour
             if (molotovCount > 0)
             {
                 molotovCount--;
+                bottle.SetActive(true);
+                fabric.SetActive(true);
                 Instantiate(molotov, new Vector2(transform.position.x, transform.position.y + 0.5f), Quaternion.identity);
             }
             else
@@ -160,6 +167,6 @@ public class PlayerItems : MonoBehaviour
             default:
                 break;
         }
-        Destroy(collision.transform.root.gameObject);
+        collision.transform.root.gameObject.SetActive(false);
     }
 }

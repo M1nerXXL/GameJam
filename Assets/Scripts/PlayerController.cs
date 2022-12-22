@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D playerRB;
     public Rigidbody2D snowballRB;
 
+    private bool gameActive = true;
     private bool doubleJump = false;
     public bool grounded;
     public bool inWall;
@@ -27,109 +28,76 @@ public class PlayerController : MonoBehaviour
         input = Input.GetAxis("Horizontal");
 
         //Rays for wall detection
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.left * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y), Vector2.left * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.left * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.35f, transform.position.y + 0.74f), Vector2.left * 0.05f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.35f, transform.position.y), Vector2.left * 0.05f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.35f, transform.position.y - 0.74f), Vector2.left * 0.05f, Color.red);
-        bool wallLaserShortTL = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.left, 0.35f);
-        bool wallLaserShortML = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 0.35f);
-        bool wallLaserShortBL = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.left, 0.35f);
-        bool wallLaserLongTL = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.left, 0.4f);
-        bool wallLaserLongML = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 0.4f);
-        bool wallLaserLongBL = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.left, 0.4f);
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.35f, transform.position.y + 0.75f), Vector2.down * 1.45f, Color.blue);
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.375f, transform.position.y + 0.75f), Vector2.down * 1.45f, Color.red);
+        bool wallLaserCloseL = Physics2D.Raycast(new Vector2(transform.position.x - 0.35f, transform.position.y + 0.75f), Vector2.down, 1.48f);
+        bool wallLaserFarL = Physics2D.Raycast(new Vector2(transform.position.x - 0.375f, transform.position.y + 0.75f), Vector2.down, 1.48f);
 
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.right * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y), Vector2.right * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.right * 0.35f, Color.blue);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.35f, transform.position.y + 0.74f), Vector2.right * 0.05f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.35f, transform.position.y), Vector2.right * 0.05f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.35f, transform.position.y - 0.74f), Vector2.right * 0.05f, Color.red);
-        bool wallLaserShortTR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.right, 0.35f);
-        bool wallLaserShortMR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 0.35f);
-        bool wallLaserShortBR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.right, 0.35f);
-        bool wallLaserLongTR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.74f), Vector2.right, 0.4f);
-        bool wallLaserLongMR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 0.4f);
-        bool wallLaserLongBR = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.74f), Vector2.right, 0.4f);
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.35f, transform.position.y + 0.75f), Vector2.down * 1.45f, Color.blue);
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.375f, transform.position.y + 0.75f), Vector2.down * 1.45f, Color.red);
+        bool wallLaserCloseR = Physics2D.Raycast(new Vector2(transform.position.x + 0.35f, transform.position.y + 0.75f), Vector2.down, 1.48f);
+        bool wallLaserFarR = Physics2D.Raycast(new Vector2(transform.position.x + 0.375f, transform.position.y + 0.75f), Vector2.down, 1.48f);
 
         //If wall on left, block left movement
-        if (wallLaserLongTL || wallLaserLongML || wallLaserLongBL)
+        if (wallLaserFarL)
         {
             if (input < 0)
             {
                 input = 0;
             }
-            if (wallLaserShortTL || wallLaserShortML || wallLaserShortBL)
+            if (wallLaserCloseL)
             {
                 transform.position = new Vector2(transform.position.x + 0.01f, transform.position.y);
             }
         }
         //If wall on right, block right movement
-        if (wallLaserLongTR || wallLaserLongMR || wallLaserLongBR)
+        if (wallLaserFarR)
         {
             if (input > 0)
             {
                 input = 0;
             }
-            if (wallLaserShortTR || wallLaserShortMR || wallLaserShortBR)
+            if (wallLaserCloseR)
             {
                 transform.position = new Vector2(transform.position.x - 0.01f, transform.position.y);
             }
         }
 
-        //Move
-        playerRB.velocity = new Vector2(input * walkingSpeed, playerRB.velocity.y);
-        //Rotate
-        if (input > 0)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
-            facingRight = true;
-        }
-        else if (input < 0)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
-            facingRight = false;
-        }
-
         //Rays for floor detection
-        bool floorLaserL;
-        bool floorLaserR;
-        
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.275f, transform.position.y - 0.7f), Vector2.down * 0.1f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.275f, transform.position.y), Vector2.down * 0.7f, Color.blue);
-        bool floorLaserLongL = Physics2D.Raycast(new Vector2(transform.position.x - 0.275f, transform.position.y), Vector2.down, 0.8f);
-        bool floorLaserShortL = Physics2D.Raycast(new Vector2(transform.position.x - 0.275f, transform.position.y), Vector2.down, 0.7f);
-        if (floorLaserLongL && !floorLaserShortL)
-        {
-            floorLaserL = true;
-        }
-        else
-        {
-            floorLaserL = false;
-        }
-
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.275f, transform.position.y - 0.7f), Vector2.down * 0.1f, Color.red);
-        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x + 0.275f, transform.position.y), Vector2.down * 0.7f, Color.blue);
-        bool floorLaserLongR = Physics2D.Raycast(new Vector2(transform.position.x + 0.275f, transform.position.y), Vector2.down, 0.8f);
-        bool floorLaserShortR = Physics2D.Raycast(new Vector2(transform.position.x + 0.275f, transform.position.y), Vector2.down, 0.7f);
-        if (floorLaserLongR && !floorLaserShortR)
-        {
-            floorLaserR = true;
-        }
-        else
-        {
-            floorLaserR = false;
-        }
-
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.275f, transform.position.y - 0.775f), Vector2.right * 0.550f, Color.red);
+        UnityEngine.Debug.DrawRay(new Vector2(transform.position.x - 0.275f, transform.position.y - 0.75f), Vector2.right * 0.550f, Color.blue);
+        bool floorLaserFar = Physics2D.Raycast(new Vector2(transform.position.x - 0.275f, transform.position.y - 0.775f), Vector2.right, 0.550f);
+        bool floorLaserClose = Physics2D.Raycast(new Vector2(transform.position.x - 0.275f, transform.position.y - 0.75f), Vector2.right, 0.550f);
         //Check for floor
-        if (floorLaserL || floorLaserR)
+        if (floorLaserFar)
         {
             grounded = true;
+            playerRB.gravityScale = 0;
+            if (floorLaserClose)
+            {
+                transform.position = new Vector2(transform.position.x, transform.position.y + 0.01f);
+            }
         }
         else
         {
             grounded = false;
+            playerRB.gravityScale = 5;
+        }
+
+        //Move
+        if (gameActive)
+        {
+            playerRB.velocity = new Vector2(input * walkingSpeed, playerRB.velocity.y);
+            if (input > 0)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+                facingRight = true;
+            }
+            else if (input < 0)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
+                facingRight = false;
+            }
         }
 
         //Enable double jump when grounded
@@ -138,7 +106,7 @@ public class PlayerController : MonoBehaviour
             doubleJump = true;
         }
         //Jump
-        if (Input.GetKeyDown(KeyCode.Space) && (grounded || doubleJump))
+        if (gameActive && Input.GetKeyDown(KeyCode.Space) && (grounded || doubleJump))
         {
             if (!grounded)
             {
@@ -149,5 +117,14 @@ public class PlayerController : MonoBehaviour
         }
 
         //UnityEngine.Debug.Log("Grounded: " + grounded + ", Double Jump: " + doubleJump + ", Floor Lasers: L " + floorLaserL + ", R " + floorLaserR + ", Input: " + input);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Finish")
+        {
+            playerRB.velocity = new Vector2(0, 0);
+            gameActive = false;
+        }
     }
 }

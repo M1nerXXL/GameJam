@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1150720992143062267}
   - component: {fileID: 1223406789873293926}
   - component: {fileID: -2031226281287243650}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Snowball
   m_TagString: Snowball
   m_Icon: {fileID: 0}
@@ -137,10 +137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1c492a86949e54cad310b51e36514c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerControllerScript: {fileID: 0}
   snowballRB: {fileID: 1150720992143062267}
-  playerCollider: {fileID: 0}
   snowballCollider: {fileID: 2440571339459002296}
+  snowballSprite: {fileID: 8603061816674491740}
+  snowballParticles: {fileID: 5002858917726334921, guid: 780ccd65c1ab9d94cb89a4c6e004504c, type: 3}
+  crateParticles1: {fileID: 5416240950562646343, guid: b87af1fccc0f2494c857940dc1df2f5c, type: 3}
+  crateParticles2: {fileID: 3590122562948380911, guid: 5dcf3cbf3aaf80a41a80fe6c7fec07a4, type: 3}
   snowballSpeed: 15
 --- !u!114 &-2031226281287243650
 MonoBehaviour:
@@ -155,5 +157,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownCollider: {fileID: 2440571339459002296}
-  backgroundWalls:
-  - {fileID: 0}
