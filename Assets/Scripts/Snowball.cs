@@ -5,10 +5,10 @@ using UnityEngine.UIElements;
 
 public class Snowball : MonoBehaviour
 {
-    public PlayerController playerControllerScript;
+    private PlayerController playerControllerScript;
 
     public Rigidbody2D snowballRB;
-    public Collider2D playerCollider;
+    private Collider2D playerCollider;
     public CircleCollider2D snowballCollider;
     private GameObject player;
 

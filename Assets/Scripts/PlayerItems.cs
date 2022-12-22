@@ -8,16 +8,27 @@ public class PlayerItems : MonoBehaviour
 {
     public PlayerController playerControllerScript;
 
+    public GameObject snowballIcon;
     public GameObject snowball;
+    public GameObject molotov;
+    public GameObject[] snow;
     public TextMeshProUGUI snowballCountDisplay;
+    public TextMeshProUGUI molotovCountDisplay;
     public TextMeshProUGUI stickCountDisplay;
     public TextMeshProUGUI metalCountDisplay;
+    public TextMeshProUGUI bottleCountDisplay;
+    public TextMeshProUGUI fabricCountDisplay;
 
+    public bool snowballEnabled = true;
     public bool shovelEnabled = false;
+    public bool molotovEnabled = false;
 
     public int snowballCount = 0;
+    public int molotovCount = 0;
     public int stickCount = 0;
     public int metalCount = 0;
+    public int bottleCount = 0;
+    public int fabricCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +49,15 @@ public class PlayerItems : MonoBehaviour
         {
             snowballCountDisplay.color = Color.white;
         }
+        molotovCountDisplay.text = molotovCount.ToString();
+        if (molotovCount == 0)
+        {
+            molotovCountDisplay.color = Color.red;
+        }
+        else
+        {
+            molotovCountDisplay.color = Color.white;
+        }
         stickCountDisplay.text = stickCount.ToString();
         if (stickCount == 0)
         {
@@ -56,10 +76,27 @@ public class PlayerItems : MonoBehaviour
         {
             metalCountDisplay.color = Color.white;
         }
-
+        bottleCountDisplay.text = bottleCount.ToString();
+        if (bottleCount == 0)
+        {
+            bottleCountDisplay.color = Color.red;
+        }
+        else
+        {
+            bottleCountDisplay.color = Color.white;
+        }
+        fabricCountDisplay.text = fabricCount.ToString();
+        if (fabricCount == 0)
+        {
+            fabricCountDisplay.color = Color.red;
+        }
+        else
+        {
+            fabricCountDisplay.color = Color.white;
+        }
 
         //Throw snowball
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Q))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Z) && snowballEnabled)
         {
             if (snowballCount > 0)
             {
@@ -73,35 +110,33 @@ public class PlayerItems : MonoBehaviour
         }
 
         //Dig for snowballs
-        if (UnityEngine.Input.GetKeyDown(KeyCode.E))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.X) && shovelEnabled && playerControllerScript.grounded)
         {
-            if (shovelEnabled && playerControllerScript.grounded)
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, 0.8f);
+            for (int i = 0; i < snow.Length; i++)
             {
-                RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x - 0.323f, transform.position.y), Vector2.down);
-                if (hit.transform.tag == "Snow")
+                if (hit.transform.gameObject == snow[i])
                 {
                     snowballCount = 9;
-                    Debug.Log("Snowballs refilled!");
-                }
-                else
-                {
-                    Debug.Log("Stand on snow first!");
+                    snowballIcon.SetActive(true);
+                    snowballEnabled = true;
+                    Debug.Log("Snow refilled!");
                 }
             }
         }
 
-        //Item limit
-        if (snowballCount > 9)
+        //Throw molotov
+        if (UnityEngine.Input.GetKeyDown(KeyCode.C) && molotovEnabled)
         {
-            snowballCount = 9;
-        }
-        if (stickCount > 9)
-        {
-            stickCount = 9;
-        }
-        if (metalCount > 9)
-        {
-            metalCount = 9;
+            if (molotovCount > 0)
+            {
+                molotovCount--;
+                Instantiate(molotov, new Vector2(transform.position.x, transform.position.y + 0.5f), Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("No molotovs!");
+            }
         }
     }
 
@@ -115,6 +150,12 @@ public class PlayerItems : MonoBehaviour
                 break;
             case "Metal":
                 metalCount++;
+                break;
+            case "Bottle":
+                bottleCount++;
+                break;
+            case "Fabric":
+                fabricCount++;
                 break;
             default:
                 break;

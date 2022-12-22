@@ -25,10 +25,10 @@ public class SideScroll : MonoBehaviour
         //Scrolling
         if (gameObject.tag == "Background Far")
         {
-            transform.position = new Vector3(0.8f * x, 0.8f * y - 1.5f, transform.position.z);
+            transform.position = new Vector3(0.8f * x + 8, 0.8f * y - 1.5f, transform.position.z);
         }else if (gameObject.tag == "Background Close")
         {
-            transform.position = new Vector3(0.5f * x, 0.5f * y, transform.position.z);
+            transform.position = new Vector3(0.5f * x + 16, 0.5f * y, transform.position.z);
         }
         else
         {

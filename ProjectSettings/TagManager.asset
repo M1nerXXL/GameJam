@@ -10,8 +10,10 @@ TagManager:
   - Background Far
   - Stick
   - Metal
-  - Snow
   - Background Wall
+  - Ice
+  - Bottle
+  - Fabric
   layers:
   - Default
   - TransparentFX

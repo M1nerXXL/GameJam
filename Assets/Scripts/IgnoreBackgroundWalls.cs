@@ -12,7 +12,7 @@ public class IgnoreBackgroundWalls : MonoBehaviour
     void Start()
     {
         //Look for background walls
-        backgroundWalls = GameObject.FindGameObjectsWithTag("Background Wall"); ;
+        backgroundWalls = GameObject.FindGameObjectsWithTag("Background Wall");
         //Ignore collision with all background walls
         for (int i = 0; i < backgroundWalls.Length; i++)
         {
